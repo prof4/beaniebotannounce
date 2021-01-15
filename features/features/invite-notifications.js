@@ -35,7 +35,7 @@ module.exports = (client) => {
 
     for (const inviter in invitesAfter) {
       if (invitesBefore[inviter] === invitesAfter[inviter] - 1) {
-        const channelId = '731801004462571602'
+        const channelId = '795746552647385152'
         const channel = guild.channels.cache.get(channelId)
         const count = invitesAfter[inviter]
         channel.send(

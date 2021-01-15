@@ -6,7 +6,7 @@ module.exports = {
   cooldown: 10,
   description: 'announces',
   callback: (message, arguments, text) => {
-    channelId.send(message)
+    channelId.send(arguments)
   },
   permissions: 'ADMINISTRATOR',
   requiredRoles: [],
