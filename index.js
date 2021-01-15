@@ -1,65 +1,79 @@
-require('module-alias/register')
+const Discord = require('discord.js');
+const { Client, MessageAttachment } = require('discord.js');
+const bot = new Client();
+config = require('./config.json');
+const PREFIX = config.prefix;
 
-// const Discord = require('discord.js')
-// const client = new Discord.Client()
 
-const { MongoClient } = require('mongodb')
-const MongoDBProvider = require('commando-provider-mongo')
-const path = require('path')
-const Commando = require('discord.js-commando')
+const fs = require('fs');
+const { NONAME } = require('dns');
+const { info, warn } = require('console');
 
-const config = require('@root/config.json')
-const { loadLanguages } = require('@util/language')
-const loadCommands = require('@root/commands/load-commands')
-const commandBase = require('@root/commands/command-base')
-const loadFeatures = require('@root/features/load-features')
-const mongo = require('@util/mongo')
+bot.commands = new Discord.Collection();
 
-const modLogs = require('@features/mod-logs')
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'))
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
 
-const client = new Commando.CommandoClient({
-  owner: '725041335630954587',
-  commandPrefix: config.prefix,
-})
+    bot.commands.set(command.name, command)
+}
+var version = '0.0.1'
+bot.on('ready', () => {
+    console.log('The client is ready!')
+    console.log('Soul bot is online')
+    bot.user.setActivity('krunker.io gameplay', { type: "STREAMING", url: "https://www.youtube.com/watch?v=qTXpI-7ghp8" }).catch(console.error)
+});
 
-client.setProvider(
-  MongoClient.connect(config.mongoPath, {
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
-    .then((client) => {
-      return new MongoDBProvider(client, 'WornOffKeys')
-    })
-    .catch((err) => {
-      console.error(err)
-    })
-)
+bot.on('message', async message => {
+    if (message.author.bot) return;
 
-client.on('ready', async () => {
-  console.log('The client is ready!')
+    if (!message.content.startsWith(PREFIX)) return;
+    const input = message.content.slice(PREFIX.length).trim();
+    if (!input.length) return;
+    const [, command, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
+    let args = message.content.slice(PREFIX.length).split(" ");
+    switch (args[0]) {
+        case 'youtube':
+            bot.commands.get('youtube').execute(message, args);
+            break;
+        case 'purge':
+            bot.commands.get('purge').execute(message, args);
+            break;
+        case 'helplist':
+            if (args[1]) return;
+            bot.commands.get('helplist').execute(message, args);
 
-  await mongo()
+            break;
+        case 'help':
+            if (!args[1]) return message.channel.send('you must type helplist for all the help options');
+            bot.commands.get('help').execute(message, args);
+            break;
+        case 'smug':
+            bot.commands.get('smug').execute(message, args);
+            break;
+        case 'kick':
+            bot.commands.get('kick').execute(message, args);
+            break;
+        case 'ban':
+            bot.commands.get('ban').execute(message, args);
+            break;
+        case 'ping':
+            //if (!message.member.roles.cache.has(boss_man)) return message.channel.send('You do not have the permissions');
+            message.channel.send('pong!')
+            break;
+        case 'announce':
+            let args = message.content.slice(PREFIX.length).split("'");
+            if (message.member.hasPermission('ADMINISTRATOR'))
+            if (!args[1]) return message.channel.send('You need to give a message');
+            let channel = bot.channels.cache.get('798041957825118238')
+            if (!channel) return message.channel.send('invalid channel');
+            msg = args[1];
+            channel.send(msg);
+            break;
 
-  client.registry
-    .registerGroups([
-      ['misc', 'misc commands'],
-      ['moderation', 'moderation commands'],
-      ['economy', 'Commands for the economy system'],
-      ['giveaway', 'Commands to manage giveaways'],
-      ['games', 'Commands to handle games'],
-      ['thanks', 'Commands to help thank people'],
-      ['suggestions', 'Commands regarding suggestions'],
-      ['testing', 'Commands to test joining and leaving'],
-    ])
-    .registerDefaults()
-    .registerCommandsIn(path.join(__dirname, 'cmds'))
 
-  loadLanguages(client)
-  commandBase.loadPrefixes(client)
-  loadCommands(client)
-  loadFeatures(client)
 
-  modLogs(client)
-})
+    }
+});
 
-client.login(process.env.token)
+bot.login(process.env.token) 
