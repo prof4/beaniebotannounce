@@ -1,4 +1,4 @@
-const roles = ['tets']
+const roles = ['no existing role']
 
 module.exports = (client) => {
   const channelId = '799645696332005396'
@@ -17,7 +17,7 @@ module.exports = (client) => {
     if (hasRole) {
       const channel = guild.channels.cache.get(channelId)
       if (channel) {
-        channel.send(`<@${member.id}> said this:
+        channel.send(`<@${member.id}> announces this:
       
 "${content}"`)
       }
