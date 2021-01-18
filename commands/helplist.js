@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const { Client, MessageAttachment } = require('discord.js');
 
-const PREFIX = '=';
+const PREFIX = '-';
 
 module.exports = {
     name: 'helplist',

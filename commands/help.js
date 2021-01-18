@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const { Client, MessageAttachment } = require('discord.js');
 
-const PREFIX = '=';
+const PREFIX = '-';
 
 module.exports = {
     name: 'help',
@@ -12,12 +12,8 @@ module.exports = {
                 .setTitle('help utility page')
                 .addField(PREFIX + 'purge', 'deletes given number of messages')
                 .setColor('#5DADE2')
-            message.channel.send(embed4)
-        } else if (args[1] === 'fun') {
-            embed5 = new Discord.MessageEmbed()
                 .setTitle('help fun page')
                 .addField(PREFIX + 'smug', 'postes a random smug img')
-                .addField(PREFIX + 'spawncard', 'spawns a random card')
                 .setColor('#5DADE2')
             message.channel.send(embed5)
 

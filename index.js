@@ -4,8 +4,10 @@ const bot = new Client();
 config = require('./config.json');
 const PREFIX = config.prefix;
 
+let guild = 795746552647385149
 
 const fs = require('fs');
+bot.msgs = require("./rules.json")
 const { NONAME } = require('dns');
 const { info, warn } = require('console');
 
@@ -70,7 +72,24 @@ bot.on('message', async message => {
             msg = args[1];
             channel.send(msg);
             break;
-
+        
+        case 'wrule':
+            editmessage = message.content.slice (6);
+            bot.msgs [guild] = {
+                message: editmessage
+            }
+            fs.writeFile ("./rules.json", JSON.stringify (bot.msgs, null, 4), err => {
+                if (err) throw err;
+                message.channel.send ("rules updated");
+            });
+            break;
+        case 'drule':
+            let chan = bot.channels.cache.get('795746733934116874')
+            if (!chan) return message.channel.send('invalid channel');
+            let _message = bot.msgs[guild].message;
+            chan.send(_message);
+            break;
+    
 
 
     }
