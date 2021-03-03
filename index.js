@@ -64,7 +64,7 @@ bot.on('message', async message => {
             message.channel.send('pong!')
             break;
         case 'announce':
-            let args = message.content.slice(PREFIX.length).split("'");
+            let args = message.content.slice(PREFIX.length).split('"');
             if (message.member.hasPermission('ADMINISTRATOR'))
             if (!args[1]) return message.channel.send('You need to give a message');
             let channel = bot.channels.cache.get('798041957825118238')
