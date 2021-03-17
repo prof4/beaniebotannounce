@@ -32,7 +32,7 @@ bot.on('message', async message => {
         message.reply(":thinking:")
     }
     if (message.content == ";-;"){
-        message.reply(";-; \n :neutral_face:")
+        message.channel.send(";-; \n :neutral_face:")
     }
     if (!message.content.startsWith(PREFIX)) return;
     const input = message.content.slice(PREFIX.length).trim();
