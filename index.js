@@ -28,7 +28,9 @@ bot.on('ready', () => {
 
 bot.on('message', async message => {
     if (message.author.bot) return;
-
+    if (message.content == "hmmmm"){
+        message.reply(":thinking:")
+    }
     if (!message.content.startsWith(PREFIX)) return;
     const input = message.content.slice(PREFIX.length).trim();
     if (!input.length) return;
