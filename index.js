@@ -31,6 +31,9 @@ bot.on('message', async message => {
     if (message.content == "hmmmm"){
         message.reply(":thinking:")
     }
+    if (message.content == ";-;"){
+        message.reply(";-; \n :neutral_face:")
+    }
     if (!message.content.startsWith(PREFIX)) return;
     const input = message.content.slice(PREFIX.length).trim();
     if (!input.length) return;
